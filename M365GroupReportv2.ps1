@@ -8,11 +8,6 @@ Script by:      Jonathan Wood
 ============================================================================================
 #>
 
-#Install-Moduel MSOnline
-Install-Module AzureAD
-#Import-Module MSOnline
-Import-Module AzureAD
-
 Param 
 ( 
     [Parameter(Mandatory = $false)] 
