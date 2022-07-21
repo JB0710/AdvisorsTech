@@ -3,15 +3,11 @@
 Name:           Microsoft 365 Group Report
 Description:    This script exports Microsoft 365 groups and their membership to CSV
 Version:        1.0
-website:        kljwtech.net
-Script by:      Jonathan Wood
+website:        o365reports.com
+Script by:      O365Reports Team
+For detailed Script execution: https://o365reports.com/2021/02/11/export-microsoft-365-group-report-to-csv-using-powershell
 ============================================================================================
 #>
-
-#Install-Moduel MSOnline
-Install-Module AzureAD
-#Import-Module MSOnline
-Import-Module AzureAD
 
 Param 
 ( 
@@ -25,6 +21,9 @@ Param
     [string]$UserName,  
     [string]$Password 
 ) 
+
+Import-Module AzureAD -UseWindowsPowerShell
+Import-Module MSOnline -UseWindowsPowerShell
 
 Function Get_members
 {
@@ -133,19 +132,19 @@ Function Print_Output
 Function main() 
 {
  #Check for MSOnline module 
- $Module=Get-Module -Name AzureAD -ListAvailable  
+ $Module=Get-Module -Name MSOnline -ListAvailable  
  if($Module.count -eq 0) 
  { 
-  Write-Host AzureD module is not available  -ForegroundColor yellow  
+  Write-Host MSOnline module is not available  -ForegroundColor yellow  
   $Confirm= Read-Host Are you sure you want to install module? [Y] Yes [N] No 
   if($Confirm -match "[yY]") 
   { 
-   Install-Module AzureAD 
-   Import-Module AzureAD
+   Install-Module MSOnline 
+   Import-Module MSOnline
   } 
   else 
   { 
-   Write-Host AzureAD module is required to connect AzureAD. Please install module using Install-Module AzureAD cmdlet. 
+   Write-Host MSOnline module is required to connect AzureAD.Please install module using Install-Module MSOnline cmdlet. 
    Exit
   }
  } 
@@ -155,11 +154,11 @@ Function main()
  {  
   $SecuredPassword = ConvertTo-SecureString -AsPlainText $Password -Force  
   $Credential  = New-Object System.Management.Automation.PSCredential $UserName,$SecuredPassword  
-  Connect-AzureAD -Credential $credential 
+  Connect-MsolService -Credential $credential 
  }  
  else  
  {  
-  Connect-AzureAD | Out-Null  
+  Connect-MsolService | Out-Null  
  } 
  
  #Set output file 
